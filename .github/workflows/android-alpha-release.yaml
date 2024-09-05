@@ -1,0 +1,57 @@
+name: Android Alpha Release
+
+on:
+  push:
+    tags:
+      - '*-android'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup environment
+        uses: ./.github/actions/setup-gradle
+        with:
+          gradle-cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
+
+      - name: Configure Keystore
+        run: |
+          echo '${{ secrets.KEYSTORE_FILE }}' > release.keystore.asc
+          gpg -d --passphrase '${{ secrets.KEYSTORE_PASSPHRASE }}' --batch release.keystore.asc > androidApp/release.keystore
+          echo "storeFile=release.keystore" >> keystore.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> keystore.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> keystore.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> keystore.properties
+          echo "dropbox_key=$DROPBOX_API_KEY" >> keystore.properties
+        env:
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+          DROPBOX_API_KEY: ${{ secrets.DROPBOX_API_KEY }}
+
+      - name: Create Debug dummy Firebase json
+        run: |
+          cp config/dummy-google-services.json androidApp/src/debug/
+          mv androidApp/src/debug/dummy-google-services.json androidApp/src/debug/google-services.json
+
+      - name: Create Firebase json
+        run: |
+          echo "$FIREBASE_JSON" > androidApp/src/release/google-services.json.b64
+          base64 -d -i androidApp/src/release/google-services.json.b64 > androidApp/src/release/google-services.json
+        env:
+          FIREBASE_JSON: ${{ secrets.FIREBASE_JSON }}
+
+      - name: Create Google Play Config file
+        run: |
+          echo "$PLAY_CONFIG_JSON" > play_config.json.b64
+          base64 -d -i play_config.json.b64 > play_config.json
+        env:
+          PLAY_CONFIG_JSON: ${{ secrets.PLAY_CONFIG }}
+
+      - name: Distribute app to Alpha track
+        run: ./gradlew :androidApp:bundleRelease :androidApp:publishBundle

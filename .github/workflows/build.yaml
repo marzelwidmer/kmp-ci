@@ -75,7 +75,7 @@ jobs:
       - name: Upload DMG
         uses: actions/upload-artifact@v3
         with:
-          name: dmg-file
+          name: kmp-ci
           path: composeApp/build/compose/binaries/main/dmg/*.dmg
 
 #      - uses: Apple-Actions/upload-testflight-build@v1

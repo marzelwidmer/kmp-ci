@@ -95,6 +95,10 @@ compose.desktop {
     application {
         mainClass = "ch.keepcalm.MainKt"
 
+        macOs {
+            minimumSystemVersion = "12"
+        }
+
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "kmp-ci"

@@ -69,8 +69,11 @@ jobs:
 #          echo "VERSION=$version" >> $GITHUB_ENV
 #          echo "RELEASE_PATH=$path" >> $GITHUB_ENV
 
-      - name: Create DMG
-        run: ./gradlew packageDmg
+      - name: import certs
+        uses: apple-actions/import-codesign-certs@v2
+        with:
+          p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
+          p12-password: ${{ secrets.CERTIFICATES_PASSWORD }}
 
       - name: Upload DMG
         uses: actions/upload-artifact@v3

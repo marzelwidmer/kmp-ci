@@ -9,9 +9,9 @@ on:
       - main
 
 jobs:
-  build-android:
-    name: Build Android
-    runs-on: ubuntu-latest
+  build:
+    name: Build Android and iOS
+    runs-on: macos-latest
 
     steps:
       - name: Checkout code
@@ -29,5 +29,8 @@ jobs:
           api-level: 30
           build-tools: 30.0.3
 
-      - name: Build with Gradle
+      - name: Build Android with Gradle
         run: ./gradlew build
+
+#      - name: Build iOS with Xcode
+#        run: xcodebuild -workspace iosApp/iosApp.xcworkspace -scheme iosApp -sdk iphonesimulator -configuration Release build

@@ -70,7 +70,7 @@ jobs:
 #          echo "RELEASE_PATH=$path" >> $GITHUB_ENV
 
       - name: Create PKG
-        run: ./gradlew packageReleasePkg -PmacOsAppStoreRelease=true
+        run: ./gradlew packageDmg
 
 #      - uses: Apple-Actions/upload-testflight-build@v1
 #        with:

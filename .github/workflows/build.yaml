@@ -32,5 +32,8 @@ jobs:
       - name: Build Android with Gradle
         run: ./gradlew build
 
+      - name: Create DMG
+        run: ./gradlew packageReleaseDmg
+
 #      - name: Build iOS with Xcode
 #        run: xcodebuild -workspace iosApp/iosApp.xcworkspace -scheme iosApp -sdk iphonesimulator -configuration Release build

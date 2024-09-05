@@ -96,7 +96,7 @@ compose.desktop {
         mainClass = "ch.keepcalm.MainKt"
 
         macOs {
-            minimumSystemVersion = "12"
+            minimumSystemVersion = "12.0"
         }
 
         nativeDistributions {

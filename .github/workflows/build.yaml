@@ -69,8 +69,14 @@ jobs:
 #          echo "VERSION=$version" >> $GITHUB_ENV
 #          echo "RELEASE_PATH=$path" >> $GITHUB_ENV
 
-      - name: Create PKG
+      - name: Create DMG
         run: ./gradlew packageDmg
+
+      - name: Upload DMG
+        uses: actions/upload-artifact@v3
+        with:
+          name: dmg-file
+          path: composeApp/build/compose/binaries/main/dmg/*.dmg
 
 #      - uses: Apple-Actions/upload-testflight-build@v1
 #        with:

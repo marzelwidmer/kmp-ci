@@ -76,7 +76,7 @@ jobs:
           p12-password: ${{ secrets.CERTIFICATES_PASSWORD }}
 
       - name: Create DMG
-        run: ./gradlew iosArm64Binaries
+        run: ./gradlew packageReleaseDmg
 
       - name: Upload DMG
         uses: actions/upload-artifact@v3

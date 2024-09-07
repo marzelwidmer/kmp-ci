@@ -82,7 +82,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: kmp-ci
-          path: composeApp/build/compose/binaries/main/dmg/*.dmg
+          path: composeApp/build/compose/binaries/main-release/dmg/*.dmg
 
 #      - uses: Apple-Actions/upload-testflight-build@v1
 #        with:

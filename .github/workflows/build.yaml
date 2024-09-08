@@ -44,19 +44,19 @@ jobs:
           p12-file-base64: ${{ secrets.MAC_APP_DISTRIBUTION_INSTALLER_CERTIFICATE }}
           p12-password: ${{ secrets.MAC_APP_DISTRIBUTION_INSTALLER_CERTIFICATE_PWD }}
 
-      - name: Create Embedded Provision Profile
-        run: |
-          echo "$EMBEDDED_PROVISION" > desktopApp/embedded.provisionprofile.b64
-          base64 -d -i desktopApp/embedded.provisionprofile.b64 > desktopApp/embedded.provisionprofile
-        env:
-          EMBEDDED_PROVISION: ${{ secrets.EMBEDDED_PROVISION }}
+#      - name: Create Embedded Provision Profile
+#        run: |
+#          echo "$EMBEDDED_PROVISION" > desktopApp/embedded.provisionprofile.b64
+#          base64 -d -i desktopApp/embedded.provisionprofile.b64 > desktopApp/embedded.provisionprofile
+#        env:
+#          EMBEDDED_PROVISION: ${{ secrets.EMBEDDED_PROVISION }}
 
-      - name: Create Runtime Provision Profile
-        run: |
-          echo "$RUNTIME_PROVISION" > desktopApp/runtime.provisionprofile.b64
-          base64 -d -i desktopApp/runtime.provisionprofile.b64 > desktopApp/runtime.provisionprofile
-        env:
-          RUNTIME_PROVISION: ${{ secrets.RUNTIME_PROVISION }}
+#      - name: Create Runtime Provision Profile
+#        run: |
+#          echo "$RUNTIME_PROVISION" > desktopApp/runtime.provisionprofile.b64
+#          base64 -d -i desktopApp/runtime.provisionprofile.b64 > desktopApp/runtime.provisionprofile
+#        env:
+#          RUNTIME_PROVISION: ${{ secrets.RUNTIME_PROVISION }}
 
       - name: Create path variables
         id: path_variables

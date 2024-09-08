@@ -44,6 +44,13 @@ jobs:
       - name: Create DMG
         run: ./gradlew packageReleaseDmg
 
+      - name: Sign DMG
+        run: |
+          codesign --deep --force --verify --verbose --sign "3rd Party Mac Developer Installer: Marcel Widmer (E9YX4X8TYH)" composeApp/build/compose/binaries/main-release/dmg/*.dmg
+
+      - name: Verify Signature
+        run: spctl -a -t open --context context:primary-signature -v composeApp/build/compose/binaries/main-release/dmg/*.dmg
+
       - name: Upload DMG
         uses: actions/upload-artifact@v3
         with:

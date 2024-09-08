@@ -55,6 +55,7 @@ jobs:
           security list-keychains -s "/Users/runner/Library/Keychains/signing_temp.keychain-db"
           security default-keychain -s "/Users/runner/Library/Keychains/signing_temp.keychain-db"
           security unlock-keychain -p "${{ secrets.MAC_APP_DISTRIBUTION_INSTALLER_CERTIFICATE_PWD }}" "/Users/runner/Library/Keychains/signing_temp.keychain-db"
+          security set-key-partition-list -S apple-tool:,apple: -s -k "${{ secrets.MAC_APP_DISTRIBUTION_INSTALLER_CERTIFICATE_PWD }}" "/Users/runner/Library/Keychains/signing_temp.keychain-db"
 
       - name: Sign DMG
         run: |

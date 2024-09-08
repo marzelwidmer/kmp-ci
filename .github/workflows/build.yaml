@@ -50,6 +50,12 @@ jobs:
       - name: Create DMG
         run: ./gradlew packageReleaseDmg
 
+      - name: Set keychain
+        run: |
+          security list-keychains -s "/Users/runner/Library/Keychains/signing_temp.keychain-db"
+          security default-keychain -s "/Users/runner/Library/Keychains/signing_temp.keychain-db"
+          security unlock-keychain -p "${{ secrets.MAC_APP_DISTRIBUTION_INSTALLER_CERTIFICATE_PWD }}" "/Users/runner/Library/Keychains/signing_temp.keychain-db"
+
       - name: Sign DMG
         run: |
           codesign --deep --force --verify --verbose --sign "3rd Party Mac Developer Installer: Marcel Widmer (E9YX4X8TYH)" composeApp/build/compose/binaries/main-release/dmg/*.dmg

@@ -35,11 +35,11 @@ jobs:
             ~/.konan
           key: ${{ runner.os }}-v1-${{ hashFiles('*.versions.toml') }}
 
-      - name: Import Mac App Distribution and Installer certificate
+      - name: Import Developer ID Application certificate
         uses: apple-actions/import-codesign-certs@v2
         with:
-          p12-file-base64: ${{ secrets.MAC_APP_DISTRIBUTION_INSTALLER_CERTIFICATE }}
-          p12-password: ${{ secrets.MAC_APP_DISTRIBUTION_INSTALLER_CERTIFICATE_PWD }}
+          p12-file-base64: ${{ secrets.DEVELOPER_ID_APPLICATION_CERTIFICATE }}
+          p12-password: ${{ secrets.DEVELOPER_ID_APPLICATION_CERTIFICATE_PWD }}
 
       - name: List keychains
         run: security list-keychains
@@ -54,23 +54,15 @@ jobs:
         run: |
           security list-keychains -s "/Users/runner/Library/Keychains/signing_temp.keychain-db"
           security default-keychain -s "/Users/runner/Library/Keychains/signing_temp.keychain-db"
-          security unlock-keychain -p "${{ secrets.MAC_APP_DISTRIBUTION_INSTALLER_CERTIFICATE_PWD }}" "/Users/runner/Library/Keychains/signing_temp.keychain-db"
-          security set-key-partition-list -S apple-tool:,apple: -s -k "${{ secrets.MAC_APP_DISTRIBUTION_INSTALLER_CERTIFICATE_PWD }}" "/Users/runner/Library/Keychains/signing_temp.keychain-db"
+          security unlock-keychain -p "${{ secrets.DEVELOPER_ID_APPLICATION_CERTIFICATE_PWD }}" "/Users/runner/Library/Keychains/signing_temp.keychain-db"
+          security set-key-partition-list -S apple-tool:,apple: -s -k "${{ secrets.DEVELOPER_ID_APPLICATION_CERTIFICATE_PWD }}" "/Users/runner/Library/Keychains/signing_temp.keychain-db"
 
       - name: Sign DMG
         run: |
-          codesign --deep --force --verify --verbose --sign "3rd Party Mac Developer Installer: Marcel Widmer (E9YX4X8TYH)" composeApp/build/compose/binaries/main-release/dmg/*.dmg
+          codesign --deep --force --verify --verbose --sign "Developer ID Application: Marcel Widmer (E9YX4X8TYH)" composeApp/build/compose/binaries/main-release/dmg/*.dmg
 
       - name: Verify Signature
         run: spctl -a -t open --context context:primary-signature -v composeApp/build/compose/binaries/main-release/dmg/*.dmg
-
-      - name: Upload reports
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: reports
-          path: |
-            **/build/compose/logs/*  
 
       - name: Upload DMG
         uses: actions/upload-artifact@v3

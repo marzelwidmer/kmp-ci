@@ -50,7 +50,7 @@ jobs:
       - name: Create DMG
         run: ./gradlew packageReleaseDmg
 
-      - name: Set keychain
+      - name: Set keychain and unlock
         run: |
           security list-keychains -s "/Users/runner/Library/Keychains/signing_temp.keychain-db"
           security default-keychain -s "/Users/runner/Library/Keychains/signing_temp.keychain-db"

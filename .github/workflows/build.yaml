@@ -1,8 +1,5 @@
-name: Desktop MacOS Testflight Release
-#on:
-#  push:
-#    tags:
-#      - '*-desktop'
+name: Desktop MacOS Release
+
 on:
   push:
     branches:
@@ -44,39 +41,6 @@ jobs:
           p12-file-base64: ${{ secrets.MAC_APP_DISTRIBUTION_INSTALLER_CERTIFICATE }}
           p12-password: ${{ secrets.MAC_APP_DISTRIBUTION_INSTALLER_CERTIFICATE_PWD }}
 
-
-
-#      - name: Create Embedded Provision Profile
-#        run: |
-#          echo "$EMBEDDED_PROVISION" > desktopApp/embedded.provisionprofile.b64
-#          base64 -d -i desktopApp/embedded.provisionprofile.b64 > desktopApp/embedded.provisionprofile
-#        env:
-#          EMBEDDED_PROVISION: ${{ secrets.EMBEDDED_PROVISION }}
-
-#      - name: Create Runtime Provision Profile
-#        run: |
-#          echo "$RUNTIME_PROVISION" > desktopApp/runtime.provisionprofile.b64
-#          base64 -d -i desktopApp/runtime.provisionprofile.b64 > desktopApp/runtime.provisionprofile
-#        env:
-#          RUNTIME_PROVISION: ${{ secrets.RUNTIME_PROVISION }}
-
-#      - name: Create path variables
-#        id: path_variables
-#        run: |
-#          tag=$(git describe --tags --abbrev=0 --match "*-desktop")
-#          version=$(echo "$tag" | sed 's/-desktop$//')
-#          name="FeedFlow-${version}.pkg"
-#          path="desktopApp/build/release/main-release/pkg/${name}"
-#          echo "TAG=$tag" >> $GITHUB_ENV
-#          echo "VERSION=$version" >> $GITHUB_ENV
-#          echo "RELEASE_PATH=$path" >> $GITHUB_ENV
-
-#      - name: import certs
-#        uses: apple-actions/import-codesign-certs@v2
-#        with:
-#          p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
-#          p12-password: ${{ secrets.CERTIFICATES_PASSWORD }}
-
       - name: Create DMG
         run: ./gradlew packageReleaseDmg
 
@@ -85,11 +49,3 @@ jobs:
         with:
           name: kmp-ci
           path: composeApp/build/compose/binaries/main-release/dmg/*.dmg
-
-#      - uses: Apple-Actions/upload-testflight-build@v1
-#        with:
-#          app-type: 'osx'
-#          app-path: ${{ steps.path_variables.outputs.RELEASE_PATH }}
-#          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
-#          api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
-#          api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}

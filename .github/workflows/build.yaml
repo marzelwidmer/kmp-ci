@@ -58,16 +58,16 @@ jobs:
 #        env:
 #          RUNTIME_PROVISION: ${{ secrets.RUNTIME_PROVISION }}
 
-      - name: Create path variables
-        id: path_variables
-        run: |
-          tag=$(git describe --tags --abbrev=0 --match "*-desktop")
-          version=$(echo "$tag" | sed 's/-desktop$//')
-          name="FeedFlow-${version}.pkg"
-          path="desktopApp/build/release/main-release/pkg/${name}"
-          echo "TAG=$tag" >> $GITHUB_ENV
-          echo "VERSION=$version" >> $GITHUB_ENV
-          echo "RELEASE_PATH=$path" >> $GITHUB_ENV
+#      - name: Create path variables
+#        id: path_variables
+#        run: |
+#          tag=$(git describe --tags --abbrev=0 --match "*-desktop")
+#          version=$(echo "$tag" | sed 's/-desktop$//')
+#          name="FeedFlow-${version}.pkg"
+#          path="desktopApp/build/release/main-release/pkg/${name}"
+#          echo "TAG=$tag" >> $GITHUB_ENV
+#          echo "VERSION=$version" >> $GITHUB_ENV
+#          echo "RELEASE_PATH=$path" >> $GITHUB_ENV
 
       - name: import certs
         uses: apple-actions/import-codesign-certs@v2

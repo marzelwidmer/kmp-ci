@@ -13,7 +13,7 @@ kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
@@ -97,8 +97,23 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "kmp-ci"
+            packageName = "kmp"
             packageVersion = "1.0.0"
+
+            macOS {
+                bundleID = "ch.keepcalm.kmp"
+                /*signing {
+                    sign.set(true)
+//                    identity.set("Marcel Widmer")
+                    // keychain.set("/path/to/keychain")
+                }*/
+               /* notarization {
+                    val providers = project.providers
+                    appleID.set(providers.environmentVariable("NOTARIZATION_APPLE_ID"))
+                    password.set(providers.environmentVariable("NOTARIZATION_PASSWORD"))
+                    teamId.set(providers.environmentVariable("NOTARIZATION_TEAM_ID"))
+                }*/
+            }
         }
     }
 }

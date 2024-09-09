@@ -48,7 +48,7 @@ jobs:
         run: security find-identity -v
 
       - name: Create DMG
-        run: ./gradlew packageReleaseDmg
+        run: ./gradlew packageDmg -Pcompose.desktop.mac.sign=true
 
       - name: Set keychain and unlock
         run: |
@@ -67,5 +67,5 @@ jobs:
       - name: Upload DMG
         uses: actions/upload-artifact@v3
         with:
-          name: kmp-ci
+          name: kmp
           path: composeApp/build/compose/binaries/main-release/dmg/*.dmg
